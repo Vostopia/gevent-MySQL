@@ -136,7 +136,20 @@ class Cursor(object):
             raise
         except Exception, e:
             raise self._wrap_exception(e, "an error occurred while fetching results")
-            
+
+    def fetchmany(self, size=1):
+        try:
+            ret = []
+            for i in xrange(size):
+                ret.append(result_iter.next())
+        except StopIteration:
+            pass
+        except TaskletExit:
+            raise
+        except Exception, e:
+            raise self._wrap_exception(e, "an error occurred while fetching results")
+        return ret
+           
     def fetchone(self):
         try:
             return self.result_iter.next()
